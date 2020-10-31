@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "frame",
+      "type": "com.demo.utils.Upload",
+      "sourceType": "com.demo.utils.Upload"
+    }
+  ],
+  "properties": [
+    {
+      "name": "frame.upload",
+      "type": "java.lang.String",
+      "sourceType": "com.demo.utils.Upload"
+    }
+  ],
+  "hints": []
+}
