@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "图片")
 @Log4j2
     public class ImageController {
+
     @Autowired
     private IImageService iImageService;
 

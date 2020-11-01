@@ -1,8 +1,12 @@
 package com.demo.project.entity;
 
     import com.baomidou.mybatisplus.annotation.TableName;
+    import com.baomidou.mybatisplus.annotation.IdType;
+    import com.baomidou.mybatisplus.annotation.TableId;
     import java.time.LocalDateTime;
     import java.io.Serializable;
+    import java.util.Date;
+
     import io.swagger.annotations.ApiModel;
     import io.swagger.annotations.ApiModelProperty;
     import lombok.Data;
@@ -27,7 +31,8 @@ public class Landlord implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "房东id")
-    private Integer landlordId;
+    @TableId(value = "landlord_id", type = IdType.AUTO)
+    private long landlordId;
 
     @ApiModelProperty(value = "姓名")
     private String username;
@@ -45,7 +50,7 @@ public class Landlord implements Serializable {
     private String address;
 
     @ApiModelProperty(value = "时间")
-    private LocalDateTime creatTime;
+    private Date creatTime;
 
     @ApiModelProperty(value = "登录状态（未登录：0；已登录：1）")
     private Integer state;

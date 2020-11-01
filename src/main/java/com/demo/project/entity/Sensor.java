@@ -5,6 +5,8 @@ package com.demo.project.entity;
     import com.baomidou.mybatisplus.annotation.TableId;
     import java.time.LocalDateTime;
     import java.io.Serializable;
+    import java.util.Date;
+
     import io.swagger.annotations.ApiModel;
     import io.swagger.annotations.ApiModelProperty;
     import lombok.Data;
@@ -30,13 +32,13 @@ public class Sensor implements Serializable {
 
     @ApiModelProperty(value = "记录id(所有传感器)")
     @TableId(value = "sensor_id", type = IdType.AUTO)
-    private Integer sensorId;
+    private long  sensorId;
 
     @ApiModelProperty(value = "设备id")
-    private Integer facilityId;
+    private long  facilityId;
 
     @ApiModelProperty(value = "时间")
-    private LocalDateTime time;
+    private Date time;
 
     @ApiModelProperty(value = "值")
     private String value;

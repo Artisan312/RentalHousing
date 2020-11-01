@@ -39,7 +39,7 @@ import java.util.Collection;
 
     @ApiOperation("通过id查询")
     @GetMapping("get")
-    public CommonResult get(Integer id ){
+    public CommonResult get(long id ){
         return CommonResult.success(roomService.getById(id));
     }
 

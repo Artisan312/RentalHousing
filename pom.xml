@@ -66,6 +66,18 @@
             <version>2.9.2</version>
         </dependency>
 
+        <!--  解决 Illegal DefaultValue null for parameter type integer    异常  -->
+                 <dependency>
+                     <groupId>io.swagger</groupId>
+                   <artifactId>swagger-annotations</artifactId>
+                    <version>1.5.21</version>
+                 </dependency>
+                <dependency>
+                     <groupId>io.swagger</groupId>
+                    <artifactId>swagger-models</artifactId>
+                    <version>1.5.21</version>
+                </dependency>
+
         <!-- 阿里JSON解析器 -->
         <dependency>
             <groupId>com.alibaba</groupId>

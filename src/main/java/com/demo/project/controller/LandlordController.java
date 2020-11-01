@@ -1,7 +1,7 @@
 package com.demo.project.controller;
 
 import com.demo.common.result.CommonResult;
-import com.demo.project.service.IGatewayService;
+import com.demo.project.service.IImageService;
 import com.demo.project.service.ILandlordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

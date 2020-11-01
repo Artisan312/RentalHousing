@@ -33,7 +33,7 @@ public class Room implements Serializable {
 
     @ApiModelProperty(value = "房id")
     @TableId(value = "room_id", type = IdType.AUTO)
-    private Integer roomId;
+    private long roomId;
 
     @ApiModelProperty(value = "地址")
     private String address;
@@ -54,11 +54,11 @@ public class Room implements Serializable {
     private Date creatTime;
 
     @ApiModelProperty(value = "出租id")
-    private Integer leaseId;
+    private long leaseId;
 
     @ApiModelProperty(value = "首页图片id")
      @TableField("Image_id")
-    private Integer imageId;
+    private long imageId;
 
     @ApiModelProperty(value = "是否出租（是：1，否：0）")
     private Integer state;

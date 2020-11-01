@@ -6,6 +6,8 @@ package com.demo.project.entity;
     import com.baomidou.mybatisplus.annotation.TableId;
     import java.time.LocalDateTime;
     import java.io.Serializable;
+    import java.util.Date;
+
     import io.swagger.annotations.ApiModel;
     import io.swagger.annotations.ApiModelProperty;
     import lombok.Data;
@@ -31,25 +33,25 @@ public class Lease implements Serializable {
 
     @ApiModelProperty(value = "出租房记录id")
     @TableId(value = "lease_id", type = IdType.AUTO)
-    private Integer leaseId;
+    private long leaseId;
 
     @ApiModelProperty(value = "房id")
-    private Integer roomId;
+    private long roomId;
 
     @ApiModelProperty(value = "用户id")
-    private Integer userId;
+    private long userId;
 
     @ApiModelProperty(value = "创建时间")
-    private LocalDateTime creatTime;
+    private Date creatTime;
 
     @ApiModelProperty(value = "合同开始时间")
-    private LocalDate startTime;
+    private String startTime;
 
     @ApiModelProperty(value = "合同结束时间")
-    private LocalDate expiryTimer;
+    private String expiryTimer;
 
     @ApiModelProperty(value = "合同")
-    private Integer contractId;
+    private long contractId;
 
     @ApiModelProperty(value = "状态（过期：1，未过期：0）")
     private Integer state;
