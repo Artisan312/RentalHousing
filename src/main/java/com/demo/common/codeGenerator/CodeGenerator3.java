@@ -21,7 +21,7 @@ public class CodeGenerator3 {
     private static String driverName = "com.mysql.jdbc.Driver";
     private static String author = "com";
     private static String outputDir = "/src/main/java/";
-    private static String packageName = "com.demo.com.demo.project";//生成的东西放在这个包里
+    private static String packageName = "com.demo.project";//生成的东西放在这个包里
     private static String tablePrefix = "t_"; //表前缀
     private static String projectPath = System.getProperty("user.dir");
 
@@ -90,8 +90,6 @@ public class CodeGenerator3 {
                 .setStrategy(strategyConfig)
                 .setPackageInfo(new PackageConfig()
                         .setParent(packageName)
-                        .setController("com/demo/project/controller")
-                        .setEntity("com/demo/project/entity")
                 )
                 .setTemplate(new TemplateConfig().setXml(null)) //关闭默认的XML生成
                 .setTemplateEngine(new FreemarkerTemplateEngine())  //模板引擎

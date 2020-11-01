@@ -1,7 +1,7 @@
 package com.demo.project.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.demo.project.entity.User;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
 * <p>
@@ -13,4 +13,5 @@ import com.demo.project.entity.User;
 */
  public interface IUserService extends IService<User> {
 
+ User getopenId(String openId);
  }

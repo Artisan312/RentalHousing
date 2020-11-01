@@ -38,15 +38,15 @@ public class UserController {
         return CommonResult.success(userService.save(user));
     }
 
-//    @ApiOperation("登录")
-//    @GetMapping("login")
-//    public CommonResult login(User user){
-//        user= userService.getopenId(user.getOpenId());
-//        if(user==null)
-//            return CommonResult.success(userService.save(user));
-//        else
-//            return  CommonResult.success(user);
-//    }
+    @ApiOperation("登录")
+    @GetMapping("login")
+    public CommonResult login(User user){
+        user= userService.getopenId(user.getOpenId());
+        if(user==null)
+            return CommonResult.success(userService.save(user));
+        else
+            return  CommonResult.success(user);
+    }
 
     @ApiOperation("根据id更新")
     @GetMapping("updateById")

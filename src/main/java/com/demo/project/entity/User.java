@@ -1,18 +1,18 @@
 package com.demo.project.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
+    import com.baomidou.mybatisplus.annotation.TableName;
+    import com.baomidou.mybatisplus.annotation.IdType;
+    import java.time.LocalDate;
+    import com.baomidou.mybatisplus.annotation.TableId;
+    import java.time.LocalDateTime;
+    import java.io.Serializable;
+    import java.util.Date;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
+    import io.swagger.annotations.ApiModel;
+    import io.swagger.annotations.ApiModelProperty;
+    import lombok.Data;
+    import lombok.EqualsAndHashCode;
+    import lombok.experimental.Accessors;
 
 /**
 * <p>
@@ -45,7 +45,7 @@ public class User implements Serializable {
     private String sex;
 
     @ApiModelProperty(value = "电话")
-    private Integer phone;
+    private String phone;
 
     @ApiModelProperty(value = "地址")
     private String address;
@@ -64,4 +64,5 @@ public class User implements Serializable {
 
     @ApiModelProperty(value = "登录状态（未登录：0；已登录：1）")
     private Integer state;
+
 }
