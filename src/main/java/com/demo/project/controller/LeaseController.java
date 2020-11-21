@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("lease")
 @Api(tags = "出租管理")
-@Log4j2
     public class LeaseController {
 
     @Autowired

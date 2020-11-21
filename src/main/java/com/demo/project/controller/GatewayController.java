@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("gateway")
 @Api(tags = "网关管理")
-@Log4j2
     public class GatewayController {
 
     @Autowired
@@ -31,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
     @ApiOperation("查询所有网关")
     @GetMapping("list")
     public CommonResult list(){
-
         return CommonResult.success(iGatewayService.list());
     }
 }

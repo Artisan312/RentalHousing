@@ -65,4 +65,6 @@ public class User implements Serializable {
     @ApiModelProperty(value = "登录状态（未登录：0；已登录：1）")
     private Integer state;
 
+
+
 }

@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("facility")
 @Api(tags = "设备管理")
-@Log4j2
     public class FacilityController {
 
     @Autowired

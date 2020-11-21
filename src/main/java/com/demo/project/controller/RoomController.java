@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,6 @@ import java.util.Collection;
 @RestController
 @RequestMapping("room")
 @Api(tags = "房间管理")
-@Log4j2
     public class RoomController {
 
     @Autowired
@@ -44,18 +44,20 @@ import java.util.Collection;
     }
 
     @ApiOperation("添加房间")
-    @GetMapping("insertRoom")
+    @PostMapping("insertRoom")
     public CommonResult insertRoom(Room room){
         return CommonResult.success(roomService.save(room));
     }
 
     @ApiOperation("批量添加")
-    @GetMapping("saveBatch")
+    @PostMapping("saveBatch")
     public CommonResult saveBatch(Collection<Room> rooms ){
         return CommonResult.success(roomService.saveBatch(rooms));
     }
 
-
-
-
+    @ApiOperation("通过位置查询")
+    @GetMapping("LocationQuery")
+    public CommonResult LocationQuery(String address ){
+        return CommonResult.success(roomService.LocationQuery(address));
+    }
 }

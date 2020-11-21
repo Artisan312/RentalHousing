@@ -4,6 +4,11 @@
       "name": "frame",
       "type": "com.demo.utils.Upload",
       "sourceType": "com.demo.utils.Upload"
+    },
+    {
+      "name": "mqtt",
+      "type": "com.demo.equipmentControl.MqttDispose",
+      "sourceType": "com.demo.equipmentControl.MqttDispose"
     }
   ],
   "properties": [
@@ -11,6 +16,38 @@
       "name": "frame.upload",
       "type": "java.lang.String",
       "sourceType": "com.demo.utils.Upload"
+    },
+    {
+      "name": "mqtt.client-id",
+      "type": "java.lang.String",
+      "sourceType": "com.demo.equipmentControl.MqttDispose"
+    },
+    {
+      "name": "mqtt.h-o-s-t",
+      "type": "java.lang.String",
+      "sourceType": "com.demo.equipmentControl.MqttDispose"
+    },
+    {
+      "name": "mqtt.heartbeat-time",
+      "type": "java.lang.Integer",
+      "sourceType": "com.demo.equipmentControl.MqttDispose",
+      "defaultValue": 0
+    },
+    {
+      "name": "mqtt.over-time",
+      "type": "java.lang.Integer",
+      "sourceType": "com.demo.equipmentControl.MqttDispose",
+      "defaultValue": 0
+    },
+    {
+      "name": "mqtt.pass-word",
+      "type": "java.lang.String",
+      "sourceType": "com.demo.equipmentControl.MqttDispose"
+    },
+    {
+      "name": "mqtt.user-name",
+      "type": "java.lang.String",
+      "sourceType": "com.demo.equipmentControl.MqttDispose"
     }
   ],
   "hints": []

@@ -30,7 +30,7 @@ public class Sensor implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "记录id(所有传感器)")
+    @ApiModelProperty(value = "记录id")
     @TableId(value = "sensor_id", type = IdType.AUTO)
     private long  sensorId;
 

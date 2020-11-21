@@ -49,11 +49,19 @@ public class Landlord implements Serializable {
     @ApiModelProperty(value = "地址")
     private String address;
 
+    @ApiModelProperty(value = "")
+    private String name;
+
+    @ApiModelProperty(value = "")
+    private String pwd;
+
     @ApiModelProperty(value = "时间")
     private Date creatTime;
 
     @ApiModelProperty(value = "登录状态（未登录：0；已登录：1）")
     private Integer state;
+
+
 
 
 }

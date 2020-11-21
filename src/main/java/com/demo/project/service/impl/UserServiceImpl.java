@@ -18,6 +18,11 @@ import org.springframework.stereotype.Service;
 @Service
     public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
+    /**
+     * 根据openId查询User
+     * @param openId 微信id
+     * @return
+     */
     @Override
     public User getopenId(String openId) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
