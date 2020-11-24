@@ -137,10 +137,6 @@ public class UserController {
                 userService.save(user);
                 return CommonResult.success(userService.getopenId(jsonObject.getString("openid")));
             }
-
-
-
-
         } catch (Exception e) {
             recordLog.read(e);
             return CommonResult.failed();

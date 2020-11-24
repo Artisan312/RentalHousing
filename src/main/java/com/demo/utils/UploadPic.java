@@ -26,7 +26,7 @@ public class UploadPic {
 
 
 
-    public Map<String,Object> upload(MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws FileNotFoundException {
+    public Map<String,Object> upload(MultipartFile file, HttpServletRequest request, HttpServletResponse response)  {
         this. upload= ApplicationContextProvider.getBean(Upload.class);
         String fileName = file.getOriginalFilename();
         String returnUrl = request.getScheme() + "://" + request.getServerName() + ":" +"8087" ;//存储路径

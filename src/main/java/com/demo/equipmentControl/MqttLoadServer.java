@@ -7,7 +7,6 @@ import javax.servlet.ServletContextListener;
 
 
 public class MqttLoadServer implements ServletContextListener {
-    @Autowired
     public static ClientMQTT mqttReceiveTest;
 
     @Override
