@@ -3,6 +3,7 @@ package com.demo.project.controller;
 import com.demo.common.config.ApplicationContextProvider;
 import com.demo.common.result.CommonResult;
 import com.demo.project.service.IImageService;
+import com.demo.project.service.IRoomService;
 import com.demo.utils.RecordLog;
 import com.demo.utils.StringUtils;
 import com.demo.utils.UploadPic;
@@ -41,11 +42,14 @@ import java.io.OutputStream;
     @Autowired
     private IImageService iImageService;
 
-//    @ApiOperation("所有图片")
-//    @GetMapping("/list")
-//    public CommonResult list(){
-//        return CommonResult.success(iImageService.list());
-//    }
+    @Autowired
+    private IRoomService roomService;
+
+    @ApiOperation("所有图片")
+    @GetMapping("/list")
+    public CommonResult list(){
+        return CommonResult.success(iImageService.list().hashCode());
+    }
     @ApiOperation("上传图片")
     @PostMapping("/PictureUpload")
     @ResponseBody
@@ -60,13 +64,14 @@ import java.io.OutputStream;
         }
     }
 
-    @ApiOperation("根据id查询")
-    @RequestMapping("/get")
-    public void get(long id,HttpServletResponse response){
+    @ApiOperation("根据房间id查询所有图片")
+    @RequestMapping("/getAll")
+    public void getAll(long roomId,int id,HttpServletResponse response){
         FileInputStream fis = null;
         try {
             OutputStream out = response.getOutputStream();
-            File file = new File(iImageService.getById(id).getHeadPortrait());
+            //iImageService.getroomId(roomId)
+            File file = new File("");
             fis = new FileInputStream(file);
             byte[] b = new byte[fis.available()];
             fis.read(b);
@@ -84,7 +89,30 @@ import java.io.OutputStream;
             }
         }
     }
-
+    @ApiOperation("根据房间id查询首页图片")
+    @RequestMapping("/get")
+    public void get(long roomId,HttpServletResponse response){
+        FileInputStream fis = null;
+        try {
+            OutputStream out = response.getOutputStream();
+            File file = new File(iImageService.getById(roomService.getById(roomId).getImageId()).getHeadPortrait());
+            fis = new FileInputStream(file);
+            byte[] b = new byte[fis.available()];
+            fis.read(b);
+            out.write(b);
+            out.flush();
+        } catch (Exception e) {
+            recordLog.read(e);
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    recordLog.read(e);
+                }
+            }
+        }
+    }
 //    @ApiOperation("房间所有图片")
 //    @GetMapping("list")
 //    public CommonResult Roomlist(Integer id){

@@ -16,7 +16,17 @@ public class StartupItem {
     @Autowired
     private IGatewayService iGatewayService;
 
-    public boolean publish()
+
+    public boolean subscribe(String topic,int qos)
+    {
+
+        return false;
+    }
+    public boolean subscribe(String[] topic,int[] qos)
+    {
+        return false;
+    }
+    public boolean publish(String topic,String str,int qos)
     {
         try {
             //clientMQTT.publish();
