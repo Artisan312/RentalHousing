@@ -25,7 +25,7 @@ import java.util.Collection;
 @RestController
 @RequestMapping("room")
 @Api(tags = "房间管理")
-    public class RoomController {
+public class RoomController {
 
     @Autowired
     private IRoomService roomService;

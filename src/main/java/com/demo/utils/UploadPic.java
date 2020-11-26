@@ -16,9 +16,7 @@ import java.util.Map;
 import java.util.Random;
 
 @Data
-
 public class UploadPic {
-
 
     private String path;
     private Upload upload;

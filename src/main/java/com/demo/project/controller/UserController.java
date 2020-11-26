@@ -1,6 +1,7 @@
 package com.demo.project.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.demo.common.config.ApplicationContextProvider;
 import com.demo.common.result.CommonResult;
 import com.demo.project.entity.User;
 import com.demo.project.service.IUserService;
@@ -19,10 +20,13 @@ public class UserController {
     /**
      * 微信小程序id
      */
-    private String appID = "wx4bd8b4a9b1e3c26e";
-    private String appSecret = "bfffc7550da959acf43dc02013585b0d";
-    @Autowired
-    private static RecordLog recordLog;
+    private String appID = "wx9ea9e8e0078b60f0";
+    private String appSecret = "6902cfc78b04836219d930ebf3711582";
+    private RecordLog recordLog;
+    public UserController()
+    {
+        this.recordLog= ApplicationContextProvider.getBean(RecordLog.class);
+    }
 
     @Autowired
     private IUserService userService;
@@ -39,8 +43,8 @@ public class UserController {
 //    }
 
     @ApiOperation("通过id查询用户")
-    @GetMapping("get/{id}")
-    public CommonResult get(long id){
+    @GetMapping("/get/{id}")
+    public CommonResult get(@PathVariable long id){
         try{
             return CommonResult.success(userService.getById(id));
         }catch (Exception e) {
@@ -76,7 +80,7 @@ public class UserController {
 //    }
 
     @ApiOperation("根据id更新")
-    @PutMapping("updateById")
+    @PutMapping("/updateById")
     public CommonResult updateById(@RequestBody User user){
         try{
             return CommonResult.success(userService.updateById(user));
@@ -86,7 +90,7 @@ public class UserController {
         }
     }
     @ApiOperation("登录状态")
-    @GetMapping("LoginStatus/{id}")
+    @GetMapping("/LoginStatus/{id}")
     public CommonResult LoginStatus(@PathVariable long id){
         try{
             userService.updateById(userService.getById(id).setState(1));
@@ -98,23 +102,10 @@ public class UserController {
     }
 
     @ApiOperation("登录")
-    @PostMapping("login")
+    @PostMapping("/login")
     public CommonResult userLogin(@RequestParam String code) {
-
-        //判断第一个字符是否为“{”
-        if (code.startsWith("{")) {
-            code = code.substring(1);
-        }
-
-        //判断最后一个字符是否为“}”
-        if (code.endsWith("}")) {
-            code = code.substring(0, code.length() - 1);
-        }
-
-        String str1 = code.replaceAll("\"", "");
-        String str2 = str1.replaceAll("code:", "");
-
         try {//请求微信服务器，用code换取openid。HttpUtil是工具类，后面会给出实现，Configure类是小程序配置信息，后面会给出代码
+
 
             String reslut= HttpUtil.doGet(
                     "https://api.weixin.qq.com/sns/jscode2session?appid="
@@ -123,19 +114,25 @@ public class UserController {
                             + code
                             + "&grant_type=authorization_code",null
             );
-
             JSONObject jsonObject =JSONObject.parseObject(reslut);
-
+//            System.out.println(reslut);
+//            String res= HttpUtil.doGet(
+//                    "https://developers.weixin.qq.com/blogdetail?action="
+//                            + appID + "&lang="
+//                            + appSecret + "&token="
+//                            + code
+//                            + "&docid=authorization_code",null
+//            );
+//            System.out.println(res);
             if (userService.getopenId(jsonObject.getString("openid")) != null){
                 return CommonResult.success(userService.getopenId(jsonObject.getString("openid")));
             }
-
             else{
                 User user = new User();
                 user.setOpenId(jsonObject.getString("openid"));
-                System.out.println(user);
                 userService.save(user);
                 return CommonResult.success(userService.getopenId(jsonObject.getString("openid")));
+
             }
         } catch (Exception e) {
             recordLog.read(e);

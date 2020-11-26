@@ -17,4 +17,9 @@ import org.springframework.stereotype.Service;
 @Service
     public class FacilityServiceImpl extends ServiceImpl<FacilityMapper, Facility> implements IFacilityService {
 
+    @Override
+    public String getValue(long id) {
+
+        return null;
     }
+}

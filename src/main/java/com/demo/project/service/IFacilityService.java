@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
  public interface IFacilityService extends IService<Facility> {
 
+  String getValue(long id);
+
  }

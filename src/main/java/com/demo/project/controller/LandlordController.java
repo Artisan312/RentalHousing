@@ -1,5 +1,6 @@
 package com.demo.project.controller;
 
+import com.demo.common.config.ApplicationContextProvider;
 import com.demo.common.result.CommonResult;
 import com.demo.project.entity.Landlord;
 import com.demo.project.service.IImageService;
@@ -23,8 +24,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("landlord")
 @Api(tags = "房东管理")
     public class LandlordController {
-    @Autowired
-    private static RecordLog recordLog;
+    private RecordLog recordLog;
+    public LandlordController()
+    {
+        this.recordLog= ApplicationContextProvider.getBean(RecordLog.class);
+    }
 
     @Autowired
     private ILandlordService iLandlordService;

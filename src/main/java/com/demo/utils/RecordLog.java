@@ -15,12 +15,12 @@ public class RecordLog {
     public RecordLog(){
         logger.setLevel(Level.INFO);
         try {
-            File file = new File("src/log/log.txt");//文件路径
+            File file = new File("src/log/log");//文件路径
             if(file.exists()) {
                 file.delete();
             }//如果文件存在就删除
             file.createNewFile();//创立新文件
-            fileHandler = new FileHandler("src/log/log.txt",true);
+            fileHandler = new FileHandler("src/log/log.",true);
             fileHandler.setLevel(Level.INFO);
             fileHandler.setFormatter(new Formatter() {
                 @Override
