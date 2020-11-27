@@ -32,4 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
     public CommonResult list(){
         return CommonResult.success(iGatewayService.list());
     }
+
+
 }

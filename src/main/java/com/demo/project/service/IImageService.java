@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.demo.project.entity.Image;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
 * <p>
  *  服务类
@@ -14,5 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
  public interface IImageService extends IService<Image> {
 
- QueryWrapper<Image> getroomId(long roomId);
+ List<Image> getroomId(long roomId);
+
+ int number(long roomId);
  }

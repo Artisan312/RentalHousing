@@ -8,6 +8,8 @@ import com.demo.project.service.IImageService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
 * <p>
     *  服务实现类
@@ -19,15 +21,21 @@ import org.springframework.stereotype.Service;
 @Service
     public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements IImageService {
     /**
-     * 根据openId查询User
+     * 根据roomId查询Image
      * @param  roomId 房间id
      * @return
      */
     @Override
-    public QueryWrapper<Image>  getroomId(long roomId) {
+    public List<Image> getroomId(long roomId) {
         QueryWrapper<Image> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(Image::getRoomId, roomId);
-        return queryWrapper;
-    }
 
+        return getBaseMapper().selectList(queryWrapper);
+    }
+    public int number(long roomId)
+    {
+        QueryWrapper<Image> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Image::getRoomId, roomId);
+        return queryWrapper.hashCode();
+    }
     }

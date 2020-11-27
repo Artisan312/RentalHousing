@@ -44,8 +44,12 @@ import org.springframework.web.bind.annotation.RestController;
         return CommonResult.success(iSensorService.save(sensor));
     }
 
-
-
+    @ApiOperation("记录")
+    @GetMapping("record")
+    public CommonResult record(long facilityId)
+    {
+        return CommonResult.success(iSensorService.record(facilityId));
+    }
 
 
 }

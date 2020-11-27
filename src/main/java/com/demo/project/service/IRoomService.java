@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.demo.project.entity.Room;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
 * <p>
  *  服务类
@@ -17,6 +19,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
   *
   * 通过位置查询
   */
- QueryWrapper<Room> LocationQuery(String address);
+ List<Room> LocationQuery(String address);
 
 }
