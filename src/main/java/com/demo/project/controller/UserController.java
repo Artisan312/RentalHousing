@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.demo.common.config.ApplicationContextProvider;
 import com.demo.common.result.CommonResult;
 import com.demo.project.entity.User;
+import com.demo.project.entity.UserToken;
 import com.demo.project.service.IUserService;
+import com.demo.project.service.IUserTokenService;
 import com.demo.utils.RecordLog;
 import com.demo.utils2.HttpUtil;
 import io.swagger.annotations.Api;
@@ -30,6 +32,9 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IUserTokenService iUserTokenService;
 
 //    @ApiOperation("查询所有用户")
 //    @GetMapping("list")
@@ -105,8 +110,6 @@ public class UserController {
     @PostMapping("/login")
     public CommonResult userLogin(@RequestParam String code) {
         try {//请求微信服务器，用code换取openid。HttpUtil是工具类，后面会给出实现，Configure类是小程序配置信息，后面会给出代码
-
-
             String reslut= HttpUtil.doGet(
                     "https://api.weixin.qq.com/sns/jscode2session?appid="
                             + appID + "&secret="
@@ -140,5 +143,20 @@ public class UserController {
         }
     }
 
+    @ApiOperation("更改密码")
+    @PostMapping("/updatePwd")
+    public CommonResult updatePwd(@RequestParam long id,String pwd){
+        try{
+            UserToken userToken=iUserTokenService.getById(iUserTokenService.getId(id));
+            userToken.setPwd(pwd);
+            if(iUserTokenService.updateById(userToken))
+                return CommonResult.success(userToken);
+            else
+                return CommonResult.failed("未知错误");
+        }catch (Exception e) {
+            recordLog.read(e);
+            return CommonResult.failed("未知错误");
+        }
+    }
 
 }

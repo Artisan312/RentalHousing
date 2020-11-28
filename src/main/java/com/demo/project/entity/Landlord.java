@@ -61,6 +61,9 @@ public class Landlord implements Serializable {
     @ApiModelProperty(value = "登录状态（未登录：0；已登录：1）")
     private Integer state;
 
+    @ApiModelProperty(value = "加盐")
+    private String salt;
+
 
 
 

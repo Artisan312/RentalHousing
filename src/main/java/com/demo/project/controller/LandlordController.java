@@ -3,6 +3,7 @@ package com.demo.project.controller;
 import com.demo.common.config.ApplicationContextProvider;
 import com.demo.common.result.CommonResult;
 import com.demo.project.entity.Landlord;
+import com.demo.project.entity.UserToken;
 import com.demo.project.service.IImageService;
 import com.demo.project.service.ILandlordService;
 import com.demo.utils.RecordLog;
@@ -34,13 +35,13 @@ import org.springframework.web.bind.annotation.*;
     private ILandlordService iLandlordService;
 
     @ApiOperation("查询所有房东")
-    @GetMapping("list")
+    @GetMapping("/list")
     public CommonResult list(){
 
         return CommonResult.success(iLandlordService.list());
     }
     @ApiOperation("登录")
-    @PostMapping("login")
+    @PostMapping("/login")
     public CommonResult login(@RequestBody Landlord landlord){
         try{
             landlord= iLandlordService.login(landlord);
@@ -52,5 +53,27 @@ import org.springframework.web.bind.annotation.*;
             recordLog.read(e);
             return CommonResult.failed("未知错误");
        }
+    }
+    @ApiOperation("根据id更新")
+    @PostMapping("/updateById")
+    public CommonResult updateById(@RequestBody Landlord landlord){
+        if(landlord.getPwd()==null||landlord.getSalt()==null)
+            return CommonResult.success(iLandlordService.updateById(landlord));
+        else
+            return CommonResult.failed("数据错误");
+    }
+    @ApiOperation("更改密码")
+    @PostMapping("/updatePwd")
+    public CommonResult updatePwd(@RequestBody Landlord landlord){
+        try{
+
+            if(landlord.getPwd()==null||landlord.getSalt()==null)
+                return CommonResult.success(iLandlordService.updateById(landlord));
+            else
+                return CommonResult.failed("数据错误");
+        }catch (Exception e) {
+            recordLog.read(e);
+            return CommonResult.failed("未知错误");
+        }
     }
 }

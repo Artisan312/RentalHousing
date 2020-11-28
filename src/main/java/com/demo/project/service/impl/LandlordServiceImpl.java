@@ -6,6 +6,7 @@ import com.demo.project.entity.User;
 import com.demo.project.mapper.LandlordMapper;
 import com.demo.project.service.ILandlordService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.demo.utils.MD5Utils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,7 +23,7 @@ public class LandlordServiceImpl extends ServiceImpl<LandlordMapper, Landlord> i
     @Override
     public Landlord login(Landlord landlord) {
         Landlord LandLord=this.selectByPhone(landlord.getAddress());
-        if(LandLord.getPwd()==landlord.getPwd())
+        if(LandLord.getPwd()== MD5Utils.string2MD5(landlord.getPwd(),LandLord.getSalt()))
             return LandLord;
         else
             return null;

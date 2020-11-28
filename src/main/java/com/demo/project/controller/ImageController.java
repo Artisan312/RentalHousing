@@ -79,7 +79,6 @@ import java.io.OutputStream;
                 file.delete();
                 iImageService.removeById(Id);
                 return CommonResult.failed("成功");
-
             }
 
         } catch (Exception e) {
@@ -95,7 +94,6 @@ import java.io.OutputStream;
         }
         return CommonResult.failed("失败");
     }
-
     @ApiOperation("根据房间id查询所有图片")
     @RequestMapping("/getAll")
     public void getAll(long roomId,int id,HttpServletResponse response){
