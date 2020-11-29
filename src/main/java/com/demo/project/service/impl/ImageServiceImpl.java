@@ -8,6 +8,7 @@ import com.demo.project.service.IImageService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,10 +33,13 @@ import java.util.List;
 
         return getBaseMapper().selectList(queryWrapper);
     }
-    public int number(long roomId)
+    public List<Integer> number(long roomId)
     {
+        List<Integer> list=new ArrayList<>();
         QueryWrapper<Image> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(Image::getRoomId, roomId);
-        return queryWrapper.hashCode();
+        for(Image image : getBaseMapper().selectList(queryWrapper))
+            list.add((int)image.getImageId());
+        return list;
     }
     }

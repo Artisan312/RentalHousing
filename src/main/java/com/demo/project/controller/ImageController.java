@@ -46,11 +46,7 @@ import java.io.OutputStream;
     @Autowired
     private IRoomService roomService;
 
-    @ApiOperation("所有图片")
-    @GetMapping("/list")
-    public CommonResult list(){
-        return CommonResult.success(iImageService.list());
-    }
+
     @ApiOperation("上传图片")
     @PostMapping("/PictureUpload")
     @ResponseBody
@@ -68,8 +64,8 @@ import java.io.OutputStream;
             return CommonResult.failed("上传失败");
         }
     }
-    @ApiOperation("根据房间id查询所有图片")
-    @RequestMapping("/Delete")
+    @ApiOperation("删除图片")
+    @GetMapping("/Delete")
     public CommonResult Delete(long Id){
         FileInputStream fis = null;
         try {
@@ -95,33 +91,13 @@ import java.io.OutputStream;
         return CommonResult.failed("失败");
     }
     @ApiOperation("根据房间id查询所有图片")
-    @RequestMapping("/getAll")
-    public void getAll(long roomId,int id,HttpServletResponse response){
-        FileInputStream fis = null;
-        try {
-            OutputStream out = response.getOutputStream();
-            //iImageService.getroomId(roomId)
-            File file = new File("");
-            fis = new FileInputStream(file);
-            byte[] b = new byte[fis.available()];
-            fis.read(b);
-            out.write(b);
-            out.flush();
-        } catch (Exception e) {
-            recordLog.read(e);
-        } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    recordLog.read(e);
-                }
-            }
-        }
+    @GetMapping("/getAll")
+    public void getAll(long roomId){
+
     }
     @ApiOperation("根据房间id查询首页图片")
-    @RequestMapping("/get")
-    public void get(long roomId,HttpServletResponse response){
+    @GetMapping("/getroomId")
+    public void getroomId(long roomId,HttpServletResponse response){
         FileInputStream fis = null;
         try {
             OutputStream out = response.getOutputStream();
@@ -143,10 +119,34 @@ import java.io.OutputStream;
             }
         }
     }
+    @ApiOperation("根据id查询图片")
+    @GetMapping("/get")
+    public void get(long id,HttpServletResponse response){
+        FileInputStream fis = null;
+        try {
+            OutputStream out = response.getOutputStream();
+            File file = new File(iImageService.getById(id).getHeadPortrait());
+            fis = new FileInputStream(file);
+            byte[] b = new byte[fis.available()];
+            fis.read(b);
+            out.write(b);
+            out.flush();
+        } catch (Exception e) {
+            recordLog.read(e);
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    recordLog.read(e);
+                }
+            }
+        }
+    }
 
 
-    @ApiOperation("房间所有图片")
-    @GetMapping("number")
+    @ApiOperation("根据房间id查询所有图片id")
+    @GetMapping("/number")
     public CommonResult number(long roomId){
         return CommonResult.success(iImageService.number(roomId));
     }

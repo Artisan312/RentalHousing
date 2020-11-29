@@ -18,5 +18,5 @@ import java.util.List;
 
  List<Image> getroomId(long roomId);
 
- int number(long roomId);
+ List<Integer>  number(long roomId);
  }

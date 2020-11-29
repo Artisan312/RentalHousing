@@ -40,10 +40,10 @@ public class Gateway implements Serializable {
     @ApiModelProperty(value = "订阅主题，获取传感器数据")
     private long subscribe_topics;
 
-    @ApiModelProperty(value = "房id")
+    @ApiModelProperty(value = "发布主题，控制设备")
     private long publishing_topics;
 
-    @ApiModelProperty(value = "发布主题，控制设备")
+    @ApiModelProperty(value = "时间")
     private Date creatTime;
 
     @ApiModelProperty(value = "设备状态（正常：0，异常：1）")

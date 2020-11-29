@@ -15,18 +15,23 @@ import java.io.Serializable;
 */
  public interface ILandlordService extends IService<Landlord> {
  /**
-  *
+  *登录
   * @param landlord
   * @return
   */
  Landlord login(Landlord landlord);
 
  /**
-  *
+  *根据手机查询房东信息
   * @param phone
   * @return
   */
  Landlord selectByPhone(String phone);
 
-
+ /**
+  * 根据用户名查询房东信息
+  * @param phone
+  * @return
+  */
+ Landlord selectByUsername(String phone);
 }

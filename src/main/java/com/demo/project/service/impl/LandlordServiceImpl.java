@@ -22,17 +22,33 @@ public class LandlordServiceImpl extends ServiceImpl<LandlordMapper, Landlord> i
 
     @Override
     public Landlord login(Landlord landlord) {
-        Landlord LandLord=this.selectByPhone(landlord.getAddress());
+        Landlord LandLord;
+        if(landlord.getUsername()==null||"".equals(landlord.getUsername()))
+            LandLord=this.selectByPhone(landlord.getPhone());
+        else
+            LandLord=this.selectByUsername(landlord.getUsername());
         if(LandLord.getPwd()== MD5Utils.string2MD5(landlord.getPwd(),LandLord.getSalt()))
             return LandLord;
         else
             return null;
     }
-
+    /**
+     * 根据手机号查询
+     * @param phone
+     * @return
+     */
     @Override
     public Landlord selectByPhone(String phone) {
         QueryWrapper<Landlord> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(Landlord::getPhone, phone);
         return getBaseMapper().selectOne(queryWrapper);
     }
+
+    @Override
+    public Landlord selectByUsername(String phone) {
+        QueryWrapper<Landlord> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Landlord::getUsername, phone);
+        return getBaseMapper().selectOne(queryWrapper);
+    }
+
 }

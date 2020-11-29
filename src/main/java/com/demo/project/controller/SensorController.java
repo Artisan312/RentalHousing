@@ -3,6 +3,7 @@ package com.demo.project.controller;
 import com.demo.common.result.CommonResult;
 import com.demo.project.entity.Sensor;
 import com.demo.project.service.ISensorService;
+import com.demo.utils.DateUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ import org.springframework.web.bind.annotation.RestController;
     @ApiOperation("新增")
     @GetMapping("insertSensor")
     public CommonResult insertSensor(Sensor sensor){
+        sensor.setTime(DateUtils.getNowDate());
         return CommonResult.success(iSensorService.save(sensor));
     }
 
