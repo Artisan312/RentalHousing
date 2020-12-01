@@ -3,13 +3,12 @@ package com.demo.project.controller;
 import com.demo.common.config.ApplicationContextProvider;
 import com.demo.common.result.CommonResult;
 import com.demo.project.entity.Landlord;
+import com.demo.project.entity.SecretKey;
 import com.demo.project.entity.UserToken;
 import com.demo.project.service.IImageService;
 import com.demo.project.service.ILandlordService;
-import com.demo.utils.DateUtils;
-import com.demo.utils.RecordLog;
-import com.demo.utils.VerifyCode;
-import com.demo.utils.myUtils;
+import com.demo.project.service.ISecretKeyService;
+import com.demo.utils.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j2;
@@ -45,6 +44,9 @@ import java.io.OutputStream;
     @Autowired
     private ILandlordService iLandlordService;
 
+    @Autowired
+    private ISecretKeyService iSecretKeyService;
+
 //    @ApiOperation("查询所有房东")
 //    @GetMapping("/list")
 //    public CommonResult list(){
@@ -56,9 +58,9 @@ import java.io.OutputStream;
     public CommonResult insertLandlord(HttpServletRequest request,@RequestBody Landlord landlord){
         try {
             if(((boolean)request.getSession().getAttribute("Code")==true)
-            &&(landlord.getPhone() != null && !"".equals(landlord.getPhone()))
-            &&(landlord.getPwd() != null && !"".equals(landlord.getPwd()))
-            &&(landlord.getName() != null && !"".equals(landlord.getName()))
+            && !StringUtils.isEmpty(landlord.getPhone())//(landlord.getPhone() != null || !"".equals(landlord.getPhone()))
+            &&!StringUtils.isEmpty(landlord.getPwd())//(landlord.getPwd() != null || !"".equals(landlord.getPwd()))
+            &&!StringUtils.isEmpty(landlord.getName())
             )
             {
 
@@ -76,9 +78,9 @@ import java.io.OutputStream;
     }
     @ApiOperation("登录")
     @PostMapping("/login")
-    public CommonResult login(HttpServletRequest request,@RequestBody Landlord landlord){
+    public CommonResult login(@RequestBody Landlord landlord,@RequestParam("id")long id){
         try{
-            if((boolean)request.getSession().getAttribute("Code")==true) {
+            if(id!=0&&iSecretKeyService.getById(id).getState()!=0) {
                 if (((landlord.getPwd() != null && landlord.getPhone() != null) && (!"".equals(landlord.getPwd()) && !"".equals(landlord.getPhone())))
                         || ((landlord.getPwd() != null && landlord.getUsername() != null) && (!"".equals(landlord.getPwd()) && !"".equals(landlord.getUsername())))
                 )
@@ -128,9 +130,15 @@ import java.io.OutputStream;
             BufferedImage verifyImg=new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
             //生成对应宽高的初始图片
             String randomText = VerifyCode.drawRandomText(width,height,verifyImg);
+            SecretKey secretKey=new SecretKey();
+            secretKey.setCreatTime(DateUtils.getNowDate());
+            secretKey.setValidatecode(randomText);
+            String salt= MD5Utils.salt();
+            secretKey.setValueKey(salt);
+            iSecretKeyService.save(secretKey);
             //单独的一个类方法，出于代码复用考虑，进行了封装。
             //功能是生成验证码字符并加上噪点，干扰线，返回值为验证码字符
-            request.getSession().setAttribute("verifyCode", randomText);
+            request.getSession().setAttribute("verifyCode", salt);
             request.getSession().setAttribute("Code", false);
             response.setContentType("image/png");//必须设置响应内容类型为图片，否则前台不识别
             OutputStream os = response.getOutputStream(); //获取文件输出流
@@ -150,9 +158,11 @@ import java.io.OutputStream;
     public CommonResult checkValidateCode(HttpServletRequest request, @RequestParam("validateCode") String validateCode) {
         String sessionCode = request.getSession().getAttribute("verifyCode").toString();
         if (validateCode != null && !"".equals(validateCode) && sessionCode != null && !"".equals(sessionCode)) {
-            if (validateCode.equalsIgnoreCase(sessionCode)) {
-                request.getSession().setAttribute("Code", true);
-                return CommonResult.success("验证通过！");
+            SecretKey secretKey=iSecretKeyService.getValueKey(sessionCode);
+            if (validateCode.equalsIgnoreCase(secretKey.getValidatecode())) {
+                secretKey.setState(1);
+                iSecretKeyService.updateById(secretKey);
+                return CommonResult.success(secretKey.getId());
             } else {
                 return CommonResult.failed("验证失败！");
             }

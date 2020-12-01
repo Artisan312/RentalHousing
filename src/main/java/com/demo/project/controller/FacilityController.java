@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 * @since 2020-11-01
 */
 @RestController
-@RequestMapping("facility")
+@RequestMapping("/facility")
 @Api(tags = "设备管理")
 public class FacilityController {
 
@@ -34,15 +34,46 @@ public class FacilityController {
         this.recordLog= ApplicationContextProvider.getBean(RecordLog.class);
     }
     @ApiOperation("查询所有设备")
-    @GetMapping("list")
+    @GetMapping("/list")
     public CommonResult list(){
-
-        return CommonResult.success(iFacilityService.list());
+        try {
+            return CommonResult.success(iFacilityService.list());
+        }
+        catch (Exception e)
+        {
+            recordLog.read(e);
+            e.printStackTrace();
+            return CommonResult.success("未知错误");
+        }
     }
 
-    @ApiOperation("查询设备值")
-    @GetMapping("get")
+    @ApiOperation("查询设备")
+    @GetMapping("/get")
     public CommonResult get(long id){
-        return CommonResult.success(iFacilityService.getById(id).getValue());
+        try {
+            return CommonResult.success(iFacilityService.getById(id));
+        }
+        catch (Exception e)
+        {
+            recordLog.read(e);
+            e.printStackTrace();
+            return CommonResult.success("未知错误");
+        }
+
+    }
+    @ApiOperation("查询设备值")
+    @GetMapping("/getValue")
+    public CommonResult getValue(long id)
+    {
+        try {
+            return CommonResult.success(iFacilityService.getById(id).getValue());
+        }
+        catch (Exception e)
+        {
+            recordLog.read(e);
+            e.printStackTrace();
+            return CommonResult.success("未知错误");
+        }
+
     }
 }

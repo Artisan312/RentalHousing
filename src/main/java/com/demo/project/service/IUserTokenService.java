@@ -14,4 +14,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  public interface IUserTokenService extends IService<UserToken> {
 
  long getId(long userid);
+
+ String judgePwd(UserToken userToken,String pwd);
 }

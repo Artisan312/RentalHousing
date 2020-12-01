@@ -27,10 +27,10 @@ public class UserToken implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "编号")
-    private Integer id;
+    private long id;
 
     @ApiModelProperty(value = "用户id")
-    private Integer userId;
+    private long userId;
 
     @ApiModelProperty(value = "时间")
     private LocalDateTime time;

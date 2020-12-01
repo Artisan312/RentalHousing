@@ -38,13 +38,14 @@ public class UploadPic {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         //获取文件夹路径
         File file1 = new File(upload.getUpload());
-//        System.out.println(upload.getUpload());
 
         //将图片存入文件夹
         File targetFile = new File(file1, fileName);
+
         try {
             //将上传的文件写到服务器上指定的文件。
             file.transferTo(targetFile);
+            //this.setPath(file1+"\\"+fileName);
             this.setPath( returnUrl+ "/" + fileName);
             map.put("code", 1);
             map.put("message", "图片上传成功");

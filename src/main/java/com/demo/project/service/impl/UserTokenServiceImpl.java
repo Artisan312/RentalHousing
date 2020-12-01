@@ -26,4 +26,13 @@ public class UserTokenServiceImpl extends ServiceImpl<UserTokenMapper, UserToken
         queryWrapper.lambda().eq(UserToken::getUserId, userid);
         return getBaseMapper().selectOne(queryWrapper).getId();
     }
+    @Override
+    public String judgePwd(UserToken userToken,String pwd) {
+        String str;
+        str=MD5Utils.string2MD5(pwd,userToken.getSalt());
+        if(str==userToken.getPwd())
+            return str;
+        return null;
+
+    }
 }

@@ -22,7 +22,7 @@ public class CodeGenerator3 {
     private static String author = "com";
     private static String outputDir = "/src/main/java/";
     private static String packageName = "com.demo.project";//生成的东西放在这个包里
-    private static String tablePrefix = "k_"; //表前缀
+    private static String tablePrefix = ""; //表前缀
     private static String projectPath = System.getProperty("user.dir");
 
     public static void main(String[] args) {

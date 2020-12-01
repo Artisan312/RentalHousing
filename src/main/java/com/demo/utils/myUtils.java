@@ -1,5 +1,12 @@
 package com.demo.utils;
 
+import com.qiniu.util.Base64;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 
 public class myUtils {
@@ -30,6 +37,25 @@ public class myUtils {
         }
 
         return true;
+    }
+    public static byte[] getBase64(String path){
+        File file = new File(path);
+        byte[] base64 = null;
+        try {
+            BufferedImage image = ImageIO.read(file);
+            Integer width = image.getWidth();
+            Integer height = image.getHeight();
+            System.out.println("宽：" + width + " 高:"+height);
+
+            //输出流
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            ImageIO.write(image, "png", stream);
+            base64 = Base64.encode(stream.toByteArray(),16);//toByteArray()
+        } catch (IOException  e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return base64;
     }
 
 }

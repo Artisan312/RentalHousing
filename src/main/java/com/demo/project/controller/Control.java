@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/control")
+@RequestMapping("sever/control")
 @Api(tags = "控制服务")
 public class Control {
 
