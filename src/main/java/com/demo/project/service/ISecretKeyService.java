@@ -14,5 +14,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  public interface ISecretKeyService extends IService<SecretKey> {
 
   SecretKey getValueKey(String key);
+  SecretKey getValidateCode(String code);
 
  }

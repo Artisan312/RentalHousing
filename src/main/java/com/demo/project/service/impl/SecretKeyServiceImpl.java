@@ -25,4 +25,11 @@ import org.springframework.stereotype.Service;
         queryWrapper.lambda().eq(SecretKey::getValueKey, key);
         return getBaseMapper().selectOne(queryWrapper);
     }
+
+    @Override
+    public SecretKey getValidateCode(String code) {
+        QueryWrapper<SecretKey> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SecretKey::getValidatecode, code);
+        return getBaseMapper().selectOne(queryWrapper);
+    }
 }

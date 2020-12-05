@@ -2,6 +2,7 @@ package com.demo.project.service;
 
 import com.demo.project.entity.Landlord;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.Serializable;
 
@@ -19,7 +20,7 @@ import java.io.Serializable;
   * @param landlord
   * @return
   */
- Landlord login(Landlord landlord);
+ Landlord login(String name,String pwd);
 
  /**
   *根据手机查询房东信息

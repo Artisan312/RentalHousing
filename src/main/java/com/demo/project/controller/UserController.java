@@ -55,6 +55,7 @@ public class UserController {
 
     @ApiOperation("根据id更新")
     @PutMapping("/updateById")
+    @ResponseBody
     public CommonResult updateById(@RequestBody User user){
         try{
             return CommonResult.success(userService.updateById(user));
@@ -134,11 +135,13 @@ public class UserController {
     }
     @ApiOperation("设置密码")
     @PostMapping("/putPwd")
+    @ResponseBody
     public CommonResult putPwd(@RequestParam("userId") long userId,@RequestParam("pwd") String pwd)
     {
         try {
             if(userId != 0||!StringUtils.isEmpty(pwd))
             {
+                //if(iUserTokenService)
                 UserToken userToken=new UserToken();
                 userToken.setUserId(userId);
                 userToken.setSalt(MD5Utils.salt());

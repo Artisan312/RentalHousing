@@ -60,4 +60,10 @@ public class RoomController {
     public CommonResult LocationQuery(String address ){
         return CommonResult.success(roomService.LocationQuery(address));
     }
+    @ApiOperation("根据id更改")
+    @PostMapping("updateById")
+    public CommonResult updateById(Room room ){
+        return CommonResult.success(roomService.updateById(room));
+    }
+
 }

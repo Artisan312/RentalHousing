@@ -24,7 +24,10 @@ public class UserTokenServiceImpl extends ServiceImpl<UserTokenMapper, UserToken
     public long getId(long userid) {
         QueryWrapper<UserToken> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(UserToken::getUserId, userid);
-        return getBaseMapper().selectOne(queryWrapper).getId();
+        if(queryWrapper.hashCode()>1)
+            return getBaseMapper().selectOne(queryWrapper).getId();
+        else
+            return 0;
     }
     @Override
     public String judgePwd(UserToken userToken,String pwd) {

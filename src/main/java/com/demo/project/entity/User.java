@@ -14,6 +14,8 @@ package com.demo.project.entity;
     import lombok.EqualsAndHashCode;
     import lombok.experimental.Accessors;
 
+    import javax.validation.constraints.Pattern;
+
 /**
 * <p>
 * 
@@ -45,6 +47,7 @@ public class User implements Serializable {
     private String sex;
 
     @ApiModelProperty(value = "电话")
+    @Pattern(regexp = "^[1][3,4,5,7,8][0-9]{9}$",message = "请输入正确的电话号码")
     private String phone;
 
     @ApiModelProperty(value = "地址")

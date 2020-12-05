@@ -45,6 +45,7 @@ public class TimestampUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(timestampToDate13(1574429467637L));
+        //System.out.println(timestampToDate13(1574429467637L));
+        System.out.println(MD5Utils.string2MD5("123456","7562ED7FCA990A33"));
     }
 }

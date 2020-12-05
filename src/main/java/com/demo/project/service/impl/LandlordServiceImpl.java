@@ -21,14 +21,15 @@ import org.springframework.stereotype.Service;
 public class LandlordServiceImpl extends ServiceImpl<LandlordMapper, Landlord> implements ILandlordService {
 
     @Override
-    public Landlord login(Landlord landlord) {
-        Landlord LandLord;
-        if(landlord.getUsername()==null||"".equals(landlord.getUsername()))
-            LandLord=this.selectByPhone(landlord.getPhone());
-        else
-            LandLord=this.selectByUsername(landlord.getUsername());
-        if(LandLord.getPwd()== MD5Utils.string2MD5(landlord.getPwd(),LandLord.getSalt()))
-            return LandLord;
+    public Landlord login(String name,String pwd) {
+        Landlord landlord=this.selectByPhone(name);
+        if(landlord==null)
+            landlord=this.selectByUsername(name);
+        if (landlord==null)
+            return null;
+        pwd=MD5Utils.string2MD5(pwd,landlord.getSalt());
+        if(landlord.getPwd().equals(pwd))
+            return landlord;
         else
             return null;
     }

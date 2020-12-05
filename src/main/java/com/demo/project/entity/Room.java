@@ -38,6 +38,15 @@ public class Room implements Serializable {
     @ApiModelProperty(value = "地址")
     private String address;
 
+    @ApiModelProperty(value = "房型")
+    private String roomShape;
+
+    @ApiModelProperty(value = "面积")
+    private String shape;
+
+    @ApiModelProperty(value = "租房名")
+    private String roomName;
+
     @ApiModelProperty(value = "房东id")
     private Integer landlordId;
 

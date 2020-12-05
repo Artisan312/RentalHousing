@@ -54,45 +54,54 @@ import java.io.OutputStream;
 //    }
 
     @ApiOperation("新增房东")
-    @GetMapping("/insertLandlord")
-    public CommonResult insertLandlord(HttpServletRequest request,@RequestBody Landlord landlord){
+    @PostMapping("/insertLandlord")
+    @ResponseBody
+    public CommonResult insertLandlord(@RequestBody Landlord landlord){//HttpServletRequest request,@RequestBody
         try {
-            if(((boolean)request.getSession().getAttribute("Code")==true)
-            && !StringUtils.isEmpty(landlord.getPhone())//(landlord.getPhone() != null || !"".equals(landlord.getPhone()))
+            if(//((boolean)request.getSession().getAttribute("Code")==true)&&
+             !StringUtils.isEmpty(landlord.getPhone())//(landlord.getPhone() != null || !"".equals(landlord.getPhone()))
             &&!StringUtils.isEmpty(landlord.getPwd())//(landlord.getPwd() != null || !"".equals(landlord.getPwd()))
-            &&!StringUtils.isEmpty(landlord.getName())
+            //&&!StringUtils.isEmpty(landlord.getName())
             )
             {
-
                 landlord.setCreatTime(DateUtils.getNowDate());
-
+                String salt=MD5Utils.salt();
+                landlord.setSalt(salt);
+                landlord.setPwd(MD5Utils.string2MD5(landlord.getPwd(),salt));
+                return CommonResult.success(iLandlordService.save(landlord));
             }
         }catch (Exception e)
         {
             recordLog.read(e);
             e.printStackTrace();
         }
-
-
-        return CommonResult.success(iLandlordService.save(landlord));
+        return CommonResult.failed();
     }
     @ApiOperation("登录")
     @PostMapping("/login")
-    public CommonResult login(@RequestBody Landlord landlord,@RequestParam("id")long id){
+    @ResponseBody
+    public CommonResult login(@RequestParam("name")String name,@RequestParam("pwd")String pwd,@RequestParam("id")long id){//@RequestBody Landlord landlord
+        Landlord landlord;
         try{
-            if(id!=0&&iSecretKeyService.getById(id).getState()!=0) {
-                if (((landlord.getPwd() != null && landlord.getPhone() != null) && (!"".equals(landlord.getPwd()) && !"".equals(landlord.getPhone())))
-                        || ((landlord.getPwd() != null && landlord.getUsername() != null) && (!"".equals(landlord.getPwd()) && !"".equals(landlord.getUsername())))
-                )
-                    landlord = iLandlordService.login(landlord);
+            if(id!=0&&StringUtils.isNotEmpty(name)&&StringUtils.isNotEmpty(pwd)&& iSecretKeyService.getById(id).getState()!=0) {
+                if (!StringUtils.isEmpty(name)||!StringUtils.isEmpty(pwd)) {
+                    landlord = iLandlordService.login(name, pwd);
+                    if (landlord == null)
+                        return CommonResult.failed("用户名和密码错误");
+                    else {
+                        landlord.setPwd(null);
+                        landlord.setSalt(null);
+                        iSecretKeyService.removeById(id);
+                        return CommonResult.success(landlord);
+                    }
+                }
                 else
-                    return CommonResult.failed("输入错误");
+                    return CommonResult.failed("输入错误2");
             }
             else
             {
                 return CommonResult.failed("未验证");
             }
-           return  CommonResult.success(landlord);
         }catch (Exception e) {
             recordLog.read(e);
             return CommonResult.failed("未知错误");
@@ -100,6 +109,7 @@ import java.io.OutputStream;
     }
     @ApiOperation("根据id更新")
     @PostMapping("/updateById")
+    @ResponseBody
     public CommonResult updateById(@RequestBody Landlord landlord){
         if(landlord.getPwd()==null || landlord.getSalt()==null || "".equals(landlord.getPwd())||"".equals(landlord.getSalt()))
             return CommonResult.success(iLandlordService.updateById(landlord));
@@ -107,11 +117,18 @@ import java.io.OutputStream;
             return CommonResult.failed("数据错误");
     }
     @ApiOperation("更改密码")
-    @GetMapping("/updatePwd")
-    public CommonResult updatePwd(@RequestBody Landlord landlord, @RequestParam("pwd") String pwd){
+    @PostMapping("/updatePwd")
+    public CommonResult updatePwd(@RequestParam("landlordId") long landlordId,@RequestParam("oldPwd") String oldPwd, @RequestParam("pwd") String pwd){
         try{
-            if(landlord.getPwd()!=null||landlord.getSalt()!=null)
-                return CommonResult.success(iLandlordService.updateById(landlord));
+            if(StringUtils.isNotEmpty(oldPwd) && StringUtils.isNotEmpty(pwd)) {
+                Landlord landlord=iLandlordService.getById(landlordId);
+                if(landlord.getPwd()==MD5Utils.string2MD5(oldPwd,landlord.getSalt()))
+                {
+                    landlord.setPwd(MD5Utils.string2MD5(pwd,landlord.getSalt()));
+                    return CommonResult.success(iLandlordService.updateById(landlord));
+                }
+                return CommonResult.failed("密码错误");
+            }
             else
                 return CommonResult.failed("数据错误");
         }catch (Exception e) {
@@ -120,13 +137,33 @@ import java.io.OutputStream;
         }
     }
 
+
+    @ApiOperation("根据phone查询")
+    @GetMapping("/selectByPhone")
+    public CommonResult selectByPhone(@RequestParam("phone") String phone){
+        try{
+            if(!StringUtils.isEmpty(phone)) {
+                Landlord landlord=iLandlordService.selectByPhone(phone);
+                landlord.setSalt(null);
+                landlord.setPwd(null);
+                return CommonResult.success(landlord);
+            }
+            else
+                return CommonResult.failed("数据错误");
+        }catch (Exception e) {
+            recordLog.read(e);
+            return CommonResult.failed("未知错误");
+        }
+    }
+
+
     /* 获取验证码图片*/
     @ApiOperation("获取验证码")
     @GetMapping("/getValidateCode")
     public void getVerificationCode(HttpServletResponse response, HttpServletRequest request) {
         try {
             int width=200;
-            int height=69;
+            int height=80;
             BufferedImage verifyImg=new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
             //生成对应宽高的初始图片
             String randomText = VerifyCode.drawRandomText(width,height,verifyImg);
@@ -139,8 +176,9 @@ import java.io.OutputStream;
             //单独的一个类方法，出于代码复用考虑，进行了封装。
             //功能是生成验证码字符并加上噪点，干扰线，返回值为验证码字符
             request.getSession().setAttribute("verifyCode", salt);
-            request.getSession().setAttribute("Code", false);
+            //request.getSession().setAttribute("Code", false);
             response.setContentType("image/png");//必须设置响应内容类型为图片，否则前台不识别
+
             OutputStream os = response.getOutputStream(); //获取文件输出流
             ImageIO.write(verifyImg,"png",os);//输出图片流
             os.flush();
@@ -156,18 +194,41 @@ import java.io.OutputStream;
     @ApiOperation(value = "验证码校验")
     @GetMapping(value = "/checkValidateCode")
     public CommonResult checkValidateCode(HttpServletRequest request, @RequestParam("validateCode") String validateCode) {
-        String sessionCode = request.getSession().getAttribute("verifyCode").toString();
-        if (validateCode != null && !"".equals(validateCode) && sessionCode != null && !"".equals(sessionCode)) {
-            SecretKey secretKey=iSecretKeyService.getValueKey(sessionCode);
+        try {
+        String essionCode=null;
+        SecretKey secretKey;
+        try {
+             essionCode = request.getSession().getAttribute("verifyCode").toString();
+        }catch (Exception e)
+        {
+            recordLog.read(e);
+        }
+        if (validateCode != null && !"".equals(validateCode) && essionCode != null && !"".equals(essionCode)) {
+            secretKey=iSecretKeyService.getValueKey(essionCode);
             if (validateCode.equalsIgnoreCase(secretKey.getValidatecode())) {
                 secretKey.setState(1);
                 iSecretKeyService.updateById(secretKey);
-                return CommonResult.success(secretKey.getId());
+                return CommonResult.success(secretKey);
             } else {
                 return CommonResult.failed("验证失败！");
             }
         } else {
+            if(!StringUtils.isEmpty(validateCode)) {
+                secretKey = iSecretKeyService.getValidateCode(validateCode);
+                if(secretKey!=null) {
+                    secretKey.setState(1);
+                    iSecretKeyService.updateById(secretKey);
+                    return CommonResult.success(secretKey);
+                }
+            }
             return CommonResult.failed("验证失败！");
         }
+        }catch (Exception e)
+        {
+            recordLog.read(e);
+            e.printStackTrace();
+            return CommonResult.failed("验证失败");
+        }
     }
+
 }
